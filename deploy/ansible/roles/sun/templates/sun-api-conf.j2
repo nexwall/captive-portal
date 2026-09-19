@@ -1,0 +1,124 @@
+{
+    "database": {
+        "host":"{{ icaro.sun_api.db_hostname }}",
+        "port":"3306",
+        "name":"icaro",
+        "user": "{{ icaro.sun_api.db_username }}",
+        "password": "{{ icaro.sun_api.db_password }}"
+    },
+    "token_expires_days": 1,
+    "cors": {
+        "origins": ["https://{{ icaro.hostname }}"],
+        "headers": ["Token", "Content-Type", "Authorization"],
+        "methods": ["GET", "PUT", "POST", "DELETE"]
+    },
+    "captive_portal": {
+        "title": "{{ icaro.sun_api.captive_portal_title }}",
+        "subtitle": "{{ icaro.sun_api.captive_portal_subtitle }}",
+        "description": "{{ icaro.sun_api.captive_portal_description }}",
+        "redirect": "{{ icaro.sun_api.captive_portal_redirect }}",
+        "background": "{{ icaro.sun_api.captive_portal_background }}",
+        "logo": "/opt/icaro/static/logo.png",
+        "banner": "/opt/icaro/static/banner.png",
+        "bgImage": "/opt/icaro/static/bgImage.jpg",
+        "containerBgColor": "{{ icaro.sun_api.captive_portal_container_bg_color }}",
+        "titleColor": "{{ icaro.sun_api.captive_portal_title_color }}",
+        "textColor": "{{ icaro.sun_api.captive_portal_text_color }}",
+        "textStyle": "{{ icaro.sun_api.captive_portal_text_style }}"
+    },
+    "survey": {
+        "feedback_body_text": {{ lookup('file', 'files/feedback_body') | to_json }},
+        "review_body_text":  {{ lookup('file', 'files/review_body') | to_json }},
+	"feedback_subject_text": "[$$HOTSPOT$$] Benvenuto! Welcome!",
+	"review_subject_text": "[$$HOTSPOT$$] Arrivederci! See you later!"
+     },
+    "endpoints": {
+        "email": {
+{% if icaro.sun_api.email_from is defined and
+icaro.sun_api.email_smtp_host is defined and
+icaro.sun_api.email_smtp_port is defined and
+icaro.aun_api.email_smtp_user is defined and
+icaro.sun_api.email_smtp_password is defined %}
+            "from": "{{ icaro.sun_api.email_from }}",
+            "smtp_host": "{{ icaro.sun_api.email_smtp_host }}",
+            "smtp_port": {{ icaro.sun_api.email_smtp_port }},
+            "smtp_user": "{{ icaro.sun_api.email_smtp_user }}",
+            "smtp_password": "{{ icaro.sun_api.email_smtp_password }}",
+{% endif %}
+        }
+    },
+
+    "route_blocked": {
+    "admin": [{}],
+    "customer": [{
+        "verb": "POST",
+        "endpoint": "/api/accounts"
+    }, {
+        "verb": "DELETE",
+        "endpoint": "/api/accounts/[0-9]+"
+    }, {
+        "verb": "POST",
+        "endpoint": "/api/hotspots"
+    }, {
+        "verb": "PUT",
+        "endpoint": "/api/hotspots/[0-9]+"
+    }, {
+        "verb": "DELETE",
+        "endpoint": "/api/hotspots/[0-9]+"
+    }, {
+        "verb": "POST",
+        "endpoint": "/api/units/"
+    }, {
+        "verb": "DELETE",
+        "endpoint": "/api/units/[0-9]+"
+    }, {
+        "verb": "POST",
+        "endpoint": "/api/users"
+    }],
+    "desk": [{
+        "verb": "POST",
+        "endpoint": "/api/accounts"
+    }, {
+        "verb": "DELETE",
+        "endpoint": "/api/accounts/[0-9]+"
+    }, {
+        "verb": "POST",
+        "endpoint": "/api/hotspots"
+    }, {
+        "verb": "PUT",
+        "endpoint": "/api/hotspots/[0-9]+"
+    }, {
+        "verb": "DELETE",
+        "endpoint": "/api/hotspots/[0-9]+"
+    },{
+        "verb": "POST",
+        "endpoint": "/api/preferences/hotspots"
+    }, {
+        "verb": "POST",
+        "endpoint": "/api/units/"
+    }, {
+        "verb": "DELETE",
+        "endpoint": "/api/units/[0-9]+"
+    }, {
+        "verb": "POST",
+        "endpoint": "/api/users"
+    }]
+    },
+    "oidc": {
+        "issuer": "{{ icaro.sun_api.oidc_issuer | default('') }}",
+        "client_id": "{{ icaro.sun_api.oidc_client_id | default('') }}",
+        "client_secret": "{{ icaro.sun_api.oidc_client_secret | default('') }}",
+        "redirect_uri": "{{ icaro.sun_api.oidc_redirect_uri | default('http://localhost:8080/api/auth/oidc/callback') }}",
+        "frontend_url": "{{ icaro.sun_api.oidc_frontend_url | default('http://localhost:8081') }}",
+        "scopes": {{ icaro.sun_api.oidc_scopes | default(['openid', 'profile', 'email', 'roles', 'urn:logto:scope:organizations', 'urn:logto:scope:organization_roles']) | to_json }},
+        "role_mapping": {{ icaro.sun_api.oidc_role_mapping | default(['super admin:admin']) | to_json }},
+        "org_admin_role": "{{ icaro.sun_api.oidc_org_admin_role | default('Admin') }}",
+        "org_reseller_role": "{{ icaro.sun_api.oidc_org_reseller_role | default('Reseller') }}",
+        "my_api_url": "{{ icaro.sun_api.oidc_my_api_url | default('') }}",
+        "my_api_key": "{{ icaro.sun_api.oidc_my_api_key | default('') }}",
+        "default_subscription_plan_id": {{ icaro.sun_api.oidc_default_subscription_plan_id | default(4) }},
+        "userinfo_audience": "{{ icaro.sun_api.oidc_userinfo_audience | default('') }}",
+        "userinfo_origins": {{ icaro.sun_api.oidc_userinfo_origins | default(['https://my.nethesis.it', 'https://beta.my.nethesis.it']) | to_json }},
+        "show_login_button": {{ icaro.sun_api.oidc_show_login_button | default(true) | lower }}
+    }
+}
