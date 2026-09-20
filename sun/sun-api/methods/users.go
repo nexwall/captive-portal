@@ -347,16 +347,9 @@ func GetUsersExpired(c *gin.Context) {
 		buf := bytes.NewBuffer(b)
 		w := csv.NewWriter(buf)
 
-		// extract headers - use User model structure (without UserId)
-		var headers []string
-		if len(users) > 0 {
-			// User model doesn't have UserId, use it as-is
-			headers = structs.Names(users[0])
-		} else if len(userHistories) > 0 {
-			// UserHistory has UserId as second field (index 1), remove it to match User structure
-			headersWithUserId := structs.Names(userHistories[0])
-			headers = utils.RemoveIndex(headersWithUserId, 1)
-		}
+		// extract headers
+		headers := structs.Names(userHistories[0])
+		headers = utils.RemoveIndex(headers, 1)
 		// write headers to writer
 		if err := w.Write(headers); err != nil {
 			// write failed

@@ -4,8 +4,6 @@ icaro:
   version: "autobuild"
   hostname: "localhost"
   tls: "self_signed"
-  # Access log format: common (Apache Common Log Format) or json.
-  caddy_log_format: "common"
   # Google Chrome trial token for allow Private Network Access from non-secure contexts
   # see https://developer.chrome.com/blog/private-network-access-update/#register-deprecation-trial
   #origin_trial_token: ""
@@ -48,6 +46,8 @@ icaro:
     facebook_client_secret: "FacebookClientSecret"
     linkedin_client_id: "LinkedInClientID"
     linkedin_client_secret: "LinkedInClientSecret"
+    instagram_client_id: "InstagramClientID"
+    instagram_client_secret: "InstagramClientSecret"
     twilio_account_sid: "TwilioAccountSID"
     twilio_auth_token: "TwilioAuthToken"
     twilio_service_sid: "TwilioServiceSID"

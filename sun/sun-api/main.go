@@ -36,41 +36,12 @@ import (
 )
 
 func DefineAPI(router *gin.Engine) {
-	// Global CORS for the Sun frontend talking to its own API
+	// cors
 	corsConf := cors.DefaultConfig()
 	corsConf.AllowOrigins = configuration.Config.Cors.Origins
 	corsConf.AllowHeaders = configuration.Config.Cors.Headers
 	corsConf.AllowMethods = configuration.Config.Cors.Methods
-	globalCORS := cors.New(corsConf)
-
-	// /api/userinfo is called cross-origin by the My dashboard widget with
-	// its own allowlist (the My origins per environment), distinct from the
-	// Sun frontend CORS above. Handle it here — reflecting the matched
-	// origin, answering the OPTIONS preflight with 204 — so the global
-	// middleware never rejects those origins. The Bearer token check in the
-	// handler is unchanged: CORS is additive, not a substitute for auth.
-	userinfoOrigins := configuration.Config.OIDC.UserinfoOrigins
-	router.Use(func(c *gin.Context) {
-		if c.Request.URL.Path != "/api/userinfo" {
-			globalCORS(c)
-			return
-		}
-		origin := c.GetHeader("Origin")
-		for _, allowed := range userinfoOrigins {
-			if origin != "" && origin == allowed {
-				c.Header("Access-Control-Allow-Origin", origin)
-				c.Header("Vary", "Origin")
-				c.Header("Access-Control-Allow-Headers", "Authorization, Content-Type")
-				c.Header("Access-Control-Allow-Methods", "GET, OPTIONS")
-				break
-			}
-		}
-		if c.Request.Method == http.MethodOptions {
-			c.AbortWithStatus(http.StatusNoContent)
-			return
-		}
-		c.Next()
-	})
+	router.Use(cors.New(corsConf))
 
 	health := router.Group("/health")
 	health.GET("/check", methods.HealthCheck)
@@ -79,13 +50,6 @@ func DefineAPI(router *gin.Engine) {
 
 	api.POST("/login", methods.Login)
 	api.POST("/logout", methods.Logout)
-	api.GET("/userinfo", methods.UserInfo)
-	api.GET("/auth/oidc/config", methods.GetOIDCConfig)
-	api.GET("/auth/oidc/login", methods.OIDCLogin)
-	api.GET("/auth/oidc/callback", methods.OIDCCallback)
-	api.POST("/auth/oidc/exchange", methods.OIDCExchange)
-	api.POST("/auth/oidc/device/start", methods.OIDCDeviceStart)
-	api.POST("/auth/oidc/device/poll", methods.OIDCDevicePoll)
 
 	api.Use(middleware.AAWall)
 	{

@@ -53,39 +53,6 @@ type Configuration struct {
 		Origins []string `json:"origins"`
 		Methods []string `json:"methods"`
 	} `json:"cors"`
-	OIDC struct {
-		Issuer       string   `json:"issuer"`
-		ClientID     string   `json:"client_id"`
-		ClientSecret string   `json:"client_secret"`
-		RedirectURI  string   `json:"redirect_uri"`
-		FrontendURL  string   `json:"frontend_url"`
-		Scopes       []string `json:"scopes"`
-		RoleMapping  []string `json:"role_mapping"`
-		// Company (organization) login: users that hold the OrgAdminRole
-		// global role on My and belong to an organization whose
-		// organization-role is OrgResellerRole log in as the Icaro account
-		// linked to that organization via accounts.logto_org_id
-		OrgAdminRole    string `json:"org_admin_role"`
-		OrgResellerRole string `json:"org_reseller_role"`
-		// My API access for JIT provisioning of company accounts:
-		// if unset, only pre-linked organizations can log in
-		MyAPIURL                  string `json:"my_api_url"`
-		MyAPIKey                  string `json:"my_api_key"`
-		DefaultSubscriptionPlanID int    `json:"default_subscription_plan_id"`
-		// Audience expected on the ID token presented to /api/userinfo
-		// (My's own Logto app id); empty = audience check disabled
-		UserinfoAudience string `json:"userinfo_audience"`
-		// Browser origins allowed to call /api/userinfo cross-origin (the
-		// My dashboard, per environment). Separate from the Sun frontend
-		// CORS above: only /api/userinfo honors these.
-		UserinfoOrigins []string `json:"userinfo_origins"`
-		// Whether the "Login with My Nethesis" button is shown on the
-		// Sun login page. When false the OIDC endpoints stay fully
-		// functional (so the entry from the My dashboard keeps working),
-		// only the button is hidden — used for a soft launch where the
-		// flow is reachable from My but not advertised on Sun itself.
-		ShowLoginButton *bool `json:"show_login_button"`
-	} `json:"oidc"`
 	Disclaimers struct {
 		TermsOfUse   string `json:"terms_of_use"`
 		MarketingUse string `json:"marketing_use"`
@@ -172,6 +139,15 @@ func Init(ConfigFilePtr *string) {
 	if os.Getenv("LINKEDIN_REDIRECT_URL") != "" {
 		Config.AuthSocial.LinkedIn.RedirectURI = os.Getenv("LINKEDIN_REDIRECT_URL")
 	}
+	if os.Getenv("INSTAGRAM_CLIENT_ID") != "" {
+		Config.AuthSocial.Instagram.ClientId = os.Getenv("INSTAGRAM_CLIENT_ID")
+	}
+	if os.Getenv("INSTAGRAM_CLIENT_SECRET") != "" {
+		Config.AuthSocial.Instagram.ClientSecret = os.Getenv("INSTAGRAM_CLIENT_SECRET")
+	}
+	if os.Getenv("INSTAGRAM_REDIRECT_URL") != "" {
+		Config.AuthSocial.Instagram.RedirectURI = os.Getenv("INSTAGRAM_REDIRECT_URL")
+	}
 
 	if os.Getenv("SMS_ACCOUNT_SID") != "" {
 		Config.Endpoints.Sms.AccountSid = os.Getenv("SMS_ACCOUNT_SID")
@@ -254,75 +230,6 @@ func Init(ConfigFilePtr *string) {
 
 	if os.Getenv("SURVEY_URL") != "" {
 		Config.Survey.Url = os.Getenv("SURVEY_URL")
-	}
-
-	if os.Getenv("OIDC_ISSUER") != "" {
-		Config.OIDC.Issuer = os.Getenv("OIDC_ISSUER")
-	}
-	if os.Getenv("OIDC_CLIENT_ID") != "" {
-		Config.OIDC.ClientID = os.Getenv("OIDC_CLIENT_ID")
-	}
-	if os.Getenv("OIDC_CLIENT_SECRET") != "" {
-		Config.OIDC.ClientSecret = os.Getenv("OIDC_CLIENT_SECRET")
-	}
-	if os.Getenv("OIDC_REDIRECT_URI") != "" {
-		Config.OIDC.RedirectURI = os.Getenv("OIDC_REDIRECT_URI")
-	}
-	if os.Getenv("OIDC_FRONTEND_URL") != "" {
-		Config.OIDC.FrontendURL = os.Getenv("OIDC_FRONTEND_URL")
-	}
-	if os.Getenv("OIDC_SCOPES") != "" {
-		// scope names never contain spaces or commas: accept both separators
-		Config.OIDC.Scopes = strings.FieldsFunc(os.Getenv("OIDC_SCOPES"), func(r rune) bool {
-			return r == ' ' || r == ','
-		})
-	}
-	if os.Getenv("OIDC_ROLE_MAPPING") != "" {
-		// comma-separated only: role names may contain spaces ("super admin:admin")
-		var roleMappings []string
-		for _, mapping := range strings.Split(os.Getenv("OIDC_ROLE_MAPPING"), ",") {
-			if trimmed := strings.TrimSpace(mapping); trimmed != "" {
-				roleMappings = append(roleMappings, trimmed)
-			}
-		}
-		Config.OIDC.RoleMapping = roleMappings
-	}
-	if os.Getenv("OIDC_ORG_ADMIN_ROLE") != "" {
-		Config.OIDC.OrgAdminRole = os.Getenv("OIDC_ORG_ADMIN_ROLE")
-	}
-	if os.Getenv("OIDC_ORG_RESELLER_ROLE") != "" {
-		Config.OIDC.OrgResellerRole = os.Getenv("OIDC_ORG_RESELLER_ROLE")
-	}
-	if os.Getenv("OIDC_USERINFO_AUDIENCE") != "" {
-		Config.OIDC.UserinfoAudience = os.Getenv("OIDC_USERINFO_AUDIENCE")
-	}
-	if os.Getenv("OIDC_USERINFO_ORIGINS") != "" {
-		// space or comma separated list of allowed My dashboard origins
-		Config.OIDC.UserinfoOrigins = strings.FieldsFunc(os.Getenv("OIDC_USERINFO_ORIGINS"), func(r rune) bool {
-			return r == ' ' || r == ','
-		})
-	}
-	if os.Getenv("OIDC_SHOW_LOGIN_BUTTON") != "" {
-		showButton, _ := strconv.ParseBool(os.Getenv("OIDC_SHOW_LOGIN_BUTTON"))
-		Config.OIDC.ShowLoginButton = &showButton
-	}
-	if os.Getenv("OIDC_MY_API_URL") != "" {
-		Config.OIDC.MyAPIURL = os.Getenv("OIDC_MY_API_URL")
-	}
-	if os.Getenv("OIDC_MY_API_KEY") != "" {
-		Config.OIDC.MyAPIKey = os.Getenv("OIDC_MY_API_KEY")
-	}
-	if os.Getenv("OIDC_DEFAULT_SUBSCRIPTION_PLAN_ID") != "" {
-		Config.OIDC.DefaultSubscriptionPlanID, _ = strconv.Atoi(os.Getenv("OIDC_DEFAULT_SUBSCRIPTION_PLAN_ID"))
-	}
-
-	// Defaults for company OIDC login: on My "Admin" is the global user
-	// role and the organization-role encodes the organization type
-	if Config.OIDC.OrgAdminRole == "" {
-		Config.OIDC.OrgAdminRole = "Admin"
-	}
-	if Config.OIDC.OrgResellerRole == "" {
-		Config.OIDC.OrgResellerRole = "Reseller"
 	}
 
 	Config.CaptivePortal.LogoContents = ""

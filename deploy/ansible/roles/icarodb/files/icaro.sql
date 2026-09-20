@@ -3,30 +3,21 @@ CREATE TABLE `accounts` (
   `id` serial,
   `creator_id` bigint unsigned NOT NULL,
   `uuid` varchar(200),
-  `logto_org_id` varchar(64) DEFAULT NULL,
   `type` varchar(200) NOT NULL,
   `name` varchar(200) NOT NULL,
   `username` varchar (200) NOT NULL,
   `password` varchar (200) NOT NULL,
   `email` varchar(250),
-  `privacy_name` varchar(512),
-  `privacy_vat` varchar(512),
-  `privacy_address` varchar(512),
-  `privacy_email` varchar(512),
-  `privacy_dpo` varchar(512),
-  `privacy_dpo_mail` varchar(512),
   `created` datetime,
   UNIQUE KEY (`username`),
   UNIQUE KEY (`uuid`),
-  UNIQUE KEY (`logto_org_id`),
   KEY(`username`),
   KEY(`uuid`),
   PRIMARY KEY(`id`)
 );
 
 /* CREATE DEFAULT ADMIN USER */
-INSERT INTO `accounts` (`id`, `creator_id`, `uuid`, `type`, `name`, `username`, `password`, `email`, `privacy_name`, `privacy_vat`, `privacy_address`, `privacy_email`, `privacy_dpo`, `privacy_dpo_mail`, `created`)
-VALUES (1, 0, "", "admin", "Admin", "admin", MD5("admin"), "", "", "", "", "", "", "", NOW());
+INSERT INTO `accounts` VALUES (1, 0, "", "admin", "Admin", "admin", MD5("admin"), "", NOW());
 
 CREATE TABLE `account_preferences` (
   `id` serial,
@@ -312,10 +303,10 @@ INSERT INTO subscription_plans VALUES (4, 'premium', 'Premium', 'Premium plan', 
 CREATE TABLE subscriptions (
     id serial not null primary key,
     account_id bigint unsigned not null references accounts(id),
-    subscription_plan_id bigint unsigned not null references subscription_plans(id),
-    valid_from datetime null,
-    valid_until datetime null,
-    created datetime null
+    subscription_plan_id bigint not null references subscription_plans(id),
+    valid_from timestamp null,
+    valid_until timestamp null,
+    created timestamp default current_timestamp
 );
 
 /* -------------------- */

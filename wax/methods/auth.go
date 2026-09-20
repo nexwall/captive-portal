@@ -85,8 +85,7 @@ func GetDaemonLogin(c *gin.Context) {
 	password := c.Query("password")
 
 	// check user exists
-	state := utils.CheckUserIsValid(username, password)
-	if state == 1 {
+	if utils.CheckUserIsValid(username, password) {
 		// create user auth
 		utils.CreateUserAuth(sessionId, 0, unitUuid, 0, username, password, "login")
 
@@ -96,7 +95,7 @@ func GetDaemonLogin(c *gin.Context) {
 	}
 
 	// return invalid result
-	c.JSON(http.StatusCreated, gin.H{"clientState": state})
+	c.JSON(http.StatusCreated, gin.H{"clientState": "0"})
 }
 
 func GetDaemonTemporary(c *gin.Context) {
@@ -104,8 +103,6 @@ func GetDaemonTemporary(c *gin.Context) {
 	sessionId := c.Query("sessionid")
 	unitUuid := c.Query("uuid")
 	username := c.Query("username")
-	userId := c.Query("userid")
-	mac := c.Query("mac")
 
 	// get unit
 	unit := utils.GetUnitByUuid(unitUuid)
@@ -114,25 +111,11 @@ func GetDaemonTemporary(c *gin.Context) {
 	seconds := utils.GetHotspotPreferencesByKey(unit.HotspotId, "temp_session_duration")
 	secondsInt, _ := strconv.Atoi(seconds.Value)
 
-	// get email verification skip
-	skipVerification := utils.GetHotspotPreferencesByKey(unit.HotspotId, "email_login_skip_auth")
-
 	// create user auth
-	if skipVerification.Value == "true" {
-		// convert userId to int
-		userIdInt, _ := strconv.Atoi(userId)
-
-		// get user password
-		password := utils.GetUserById(userIdInt).Password
-
-		// set credentials
-		utils.CreateUserAuth(sessionId, 0, unitUuid, 0, username+":"+mac, password, "login")
-	} else {
-		utils.CreateUserAuth(sessionId, secondsInt, unitUuid, 0, username, "", "temporary")
-	}
+	utils.CreateUserAuth(sessionId, secondsInt, unitUuid, 0, username, "", "temporary")
 
 	// return result
-	c.JSON(http.StatusCreated, gin.H{"status": "success", "skip_auth": skipVerification.Value})
+	c.JSON(http.StatusCreated, gin.H{"status": "success"})
 }
 
 func GetDaemonLogout(c *gin.Context) {

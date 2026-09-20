@@ -79,6 +79,9 @@ var UtilService = {
         case "facebook":
           icon = "fa fa-facebook";
           break;
+        case "instagram":
+          icon = "fa fa-instagram";
+          break;
         case "linkedin":
           icon = "fa fa-linkedin";
           break;
@@ -100,14 +103,14 @@ var UtilService = {
         case "facebook_login_page":
           icon = "fa fa-thumbs-up login-pref-option";
           break;
+        case "instagram_login":
+          icon = "fa fa-instagram login-pref-option";
+          break;
         case "linkedin_login":
           icon = "fa fa-linkedin-square login-pref-option";
           break;
         case "email_login":
           icon = "fa fa-envelope-square login-pref-option";
-          break;
-        case "email_login_skip_auth":
-          icon = "fa fa-envelope-open login-pref-option adjust-icon-size";
           break;
         case "sms_login":
           icon = "fa fa-commenting login-pref-option";
@@ -147,9 +150,9 @@ var UtilService = {
       var type = "text";
       switch (key) {
         case "facebook_login":
+        case "instagram_login":
         case "linkedin_login":
         case "email_login":
-        case "email_login_skip_auth":
         case "sms_login":
         case "voucher_login":
         case "temp_code_login":
@@ -258,6 +261,9 @@ var UtilService = {
 
         case "facebook":
           return "#3b5998";
+
+        case "instagram":
+          return "#49769c";
 
         case "linkedin":
           return "#1f88be";

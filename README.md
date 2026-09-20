@@ -1,21 +1,12 @@
-# Icaro
-[![Build Status](https://travis-ci.org/nethesis/icaro.svg?branch=master)](https://travis-ci.org/nethesis/icaro)
+# Nexwall Captive Portal
 
-<p align="center">
-   <img src ="https://github.com/nethesis/icaro/raw/master/logo/logo.png" />
-</p>
+Captive portal (hotspot) software for hotels, venues and guest networks.
 
-**"Easy and simple HotSpot for small and medium hotels"**
+- `dedalo`: runs on the firewall and intercepts guest connections until they authenticate
+- `sun`, `wax`, `wings`, `ade`: server-side services and web applications of the hotspot manager
 
-See [official documentation](https://nethesis.github.io/icaro)
+Nexwall Firewall installs `dedalo` as the `ns-dedalo` package and connects to a hotspot manager.
 
+## License
 
-External links:
-
-- [API](https://documenter.getpostman.com/view/3364668/icaro/7LjC4mU)
-
-
-***Note***
-
-Most of the documentation is written using the *he* pronoun to simplify the construction of sentences.
-But the *he* word should be considered genderless, even if many people prefer the [singular they](https://gist.github.com/0xabad1dea/8870b192fd1758743f66)
+GPL-3.0, see `LICENSE`. Attribution and the list of changes are in `NOTICE.md`.

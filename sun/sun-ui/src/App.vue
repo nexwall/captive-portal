@@ -7,7 +7,7 @@
           <img src="/static/logo-light.png" alt=" logo">
         </span>
         <div class="container">
-          <div class="row login-button">
+          <div class="row">
             <div class="col-sm-12 col-brand">
               <div id="brand">
                 <h1>{{appName}}</h1>
@@ -49,37 +49,20 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10 submit">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block" style="border-radius: 4px;" tabindex="4">Log In</button>
+                  <div class="col-xs-8 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6">
+                    <span class="help-block"></span>
                   </div>
-                </div>
-
-                <!-- OIDC Error Alert -->
-                <div v-if="oidcError" class="form-group">
-                  <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
-                    <div class="alert alert-danger">
-                      <span class="pficon pficon-error-circle-o"></span>
-                      <strong>{{ $t("login.access_denied") }}</strong>
-                      {{ getOIDCErrorMessage() }}
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Separator and OIDC Login -->
-                <div v-if="oidcConfig && oidcConfig.login_button" class="form-group oidc-login-section">
-                  <div class="col-sm-offset-2 col-sm-10 col-md-offset-2 col-md-10">
-                    <div class="login-separator">
-                    </div>
-                    <button type="button" class="btn btn-nethesis btn-lg btn-block" v-on:click="doOIDCLogin()" tabindex="5">
-                      <img src="/static/my-nethesis.svg" class="btn-nethesis-icon" alt="" aria-hidden="true">
-                      {{ $t("login.login_with") }} {{oidcConfig.provider_name || 'My Nethesis'}}
-                    </button>
+                  <div class="col-xs-4 col-sm-4 col-md-4 submit">
+                    <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Log In</button>
                   </div>
                 </div>
               </form>
             </div>
             <!--/.col-*-->
             <div class="col-sm-5 col-md-6 col-lg-7 details">
+              <p>
+                <strong>{{ $t("login.welcome") }} {{appName}}</strong>
+              </p>
             </div>
             <!--/.col-*-->
           </div>
@@ -107,8 +90,7 @@
               <span style="display:inline-block;padding:2px 3px;">Zara Walker</span>
             </a>
           </div>
-          <div>{{ $t("login.copyright") }} &copy; {{currentYear()}} {{companyName}}</div>
-          <div><a href="/privacy" target="blank">Privacy</a></div>
+          <div>Copyright &copy; {{currentYear()}} {{companyName}}</div>
         </div>
         <!--/.container-->
       </div>
@@ -352,15 +334,11 @@
       <div
         class="container-fluid container-cards-pf container-pf-nav-pf-vertical nav-pf-persistent-secondary"
       >
-        <router-view v-if="isLogged"></router-view>
+        <router-view></router-view>
       </div>
       <!-- end main view -->
     </div>
     <!-- end logged view -->
-
-    <!-- Router view for non-logged users (OIDC callback only) -->
-    <router-view v-if="!isLogged && $route.name === 'LoginCallback'"></router-view>
-
     <!-- modals -->
     <div
       class="modal fade"
@@ -447,13 +425,6 @@ export default {
       info: {}
     };
 
-    // A denied OIDC login must not silently resume a previous session:
-    // drop the stored session so the error is visible on the login page
-    if (new URLSearchParams(window.location.search).get("error")) {
-      this.delete("loggedUser");
-      user.login = null;
-    }
-
     var errors = {
       username: false,
       password: false
@@ -482,72 +453,10 @@ export default {
       errors: errors,
       appName: CONFIG.APP_NAME,
       helpUrl: CONFIG.HELP_URL,
-      companyName: CONFIG.COMPANY_NAME,
-      CONFIG: CONFIG,
-      oidcConfig: null,
-      oidcError: null
+      companyName: CONFIG.COMPANY_NAME
     };
   },
-  mounted() {
-    // Load OIDC configuration
-    this.loadOIDCConfig();
-    // Check for OIDC errors in URL
-    this.checkOIDCError();
-  },
   methods: {
-    loadOIDCConfig() {
-      this.getOIDCConfig(
-        success => {
-          this.oidcConfig = success.body;
-        },
-        error => {
-          console.log("Failed to load OIDC config:", error);
-          this.oidcConfig = { enabled: false };
-        }
-      );
-    },
-    checkOIDCError() {
-      // Check URL parameters for OIDC errors
-      const urlParams = new URLSearchParams(window.location.search);
-      const error = urlParams.get('error');
-      if (error) {
-        this.oidcError = error;
-        // Clean URL after showing error
-        const url = new URL(window.location);
-        url.searchParams.delete('error');
-        window.history.replaceState({}, document.title, url.pathname + url.hash);
-      }
-    },
-    getOIDCErrorMessage() {
-      switch (this.oidcError) {
-        case 'unauthorized_role':
-          return this.$t('login.unauthorized_role_message');
-        case 'missing_code':
-          return this.$t('login.missing_code_message');
-        case 'invalid_state':
-        case 'invalid_nonce':
-          return this.$t('login.invalid_state_message');
-        case 'token_exchange_failed':
-          return this.$t('login.token_exchange_failed_message');
-        case 'email_not_verified':
-          return this.$t('login.email_not_verified_message');
-        case 'account_not_found':
-          return this.$t('login.account_not_found_message');
-        case 'role_mismatch':
-          return this.$t('login.role_mismatch_message');
-        case 'org_suspended':
-          return this.$t('login.org_suspended_message');
-        case 'provisioning_failed':
-        case 'account_creation_failed':
-          return this.$t('login.account_creation_failed_message');
-        case 'no_admin_account_found':
-          return this.$t('login.no_admin_account_found_message');
-        case 'exchange_failed':
-          return this.$t('login.exchange_failed_message');
-        default:
-          return this.$t('login.generic_oidc_error_message');
-      }
-    },
     currentYear() {
       return new Date().getFullYear();
     },
@@ -638,9 +547,6 @@ export default {
           console.error(error.body.message);
         }
       );
-    },
-    doOIDCLogin() {
-      this.execOIDCLogin();
     },
     initGraphics() {
       $("body").addClass("logged");

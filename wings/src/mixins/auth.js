@@ -43,7 +43,6 @@ var AuthMixin = {
             var nasid = this.$root.$options.hotspot.nasid || null
             var uamip = this.$root.$options.hotspot.uamip || null
             var uamport = this.$root.$options.hotspot.uamport || null
-            var mac = this.$root.$options.hotspot.mac || null
             var voucher = this.$root.$options.session && this.$root.$options.session['voucherCode'] ? this.$root.$options.session['voucherCode'] : null
 
             return {
@@ -55,8 +54,7 @@ var AuthMixin = {
                 uamip: uamip,
                 uamport: uamport,
                 voucher: voucher,
-                nasid: nasid,
-                mac: mac
+                nasid: nasid
             }
         },
         parseState: function (state, base64) {
@@ -92,8 +90,7 @@ var AuthMixin = {
                 '&uamport=' + params.uamport +
                 '&voucher_code=' + params.voucher +
                 '&nasid=' + params.nasid +
-                '&user=' + user +
-                '&mac=' + params.mac
+                '&user=' + user
             return url
         },
         getSocialLoginURL: function (params, social) {
@@ -113,6 +110,15 @@ var AuthMixin = {
                         '&state=' + encodeURIComponent(params.digest + "&" + params.uuid + "&" + params.sessionid + "&" + params.uamip + "&" + params.uamport + "&" + params.voucher + "&" + params.nasid) +
                         '&scope=' + escape('r_liteprofile r_emailaddress w_member_social') +
                         '&redirect_uri=' + escape('http://' + window.location.host + '/wings/login/linkedin') +
+                        '&response_type=code'
+                    break
+
+                case 'instagram':
+                    url = 'https://api.instagram.com/oauth/authorize/?' +
+                        'client_id=' + params.in_client_id +
+                        '&state=' + btoa(encodeURIComponent(params.digest + "&" + params.uuid + "&" + params.sessionid + "&" + params.uamip + "&" + params.uamport + "&" + params.voucher + "&" + params.nasid)) +
+                        '&scope=user_profile' +
+                        '&redirect_uri=' + escape('https://' + window.location.host + '/wings/login/instagram') +
                         '&response_type=code'
                     break
             }
@@ -170,14 +176,13 @@ var AuthMixin = {
                 '&username=' + encodeURIComponent(username)
             ).then(callback);
         },
-        doTempSession: function (username, userId, callback) {
+        doTempSession: function (username, callback) {
             var params = this.extractParams()
             var ip = params.uamip || null
             var port = params.uamport || null
             var digest = params.digest || null
             var uuid = params.uuid || null
             var sessionid = params.sessionid || null
-            var mac = params.mac || null
 
             if (params.state) {
                 var state = this.parseState(params.state)
@@ -194,9 +199,7 @@ var AuthMixin = {
                 '?digest=' + digest +
                 '&uuid=' + uuid +
                 '&sessionid=' + sessionid +
-                '&username=' + encodeURIComponent(username) +
-                '&userid=' + userId +
-                '&mac=' + mac
+                '&username=' + encodeURIComponent(username)
             ).then(callback);
         }
     }

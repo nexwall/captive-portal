@@ -49,9 +49,6 @@ func GetWingsPrefs(c *gin.Context) {
 	// extract hotspot info
 	hotspot := utils.GetHotspotById(unit.HotspotId)
 
-	// extract account info
-	account := utils.GetAccountByAccountId(hotspot.AccountId)
-
 	// get hotspot preferences
 	prefs := utils.GetHotspotPreferences(hotspot.Id)
 
@@ -68,6 +65,7 @@ func GetWingsPrefs(c *gin.Context) {
 	// get social ids
 	wingsPrefs.Socials.FacebookClientId = configuration.Config.AuthSocial.Facebook.ClientId
 	wingsPrefs.Socials.LinkedInClientId = configuration.Config.AuthSocial.LinkedIn.ClientId
+	wingsPrefs.Socials.InstagramClientId = configuration.Config.AuthSocial.Instagram.ClientId
 
 	// default disclaimers
 	terms := configuration.Config.Disclaimers.TermsOfUse
@@ -108,7 +106,7 @@ func GetWingsPrefs(c *gin.Context) {
 	if errT != nil {
 		fmt.Println(errT)
 	}
-	errM := m.Execute(&marketingMessage, &account)
+	errM := m.Execute(&marketingMessage, &hotspot)
 	if errM != nil {
 		fmt.Println(errM)
 	}

@@ -1,22 +1,10 @@
 <template>
   <div class="ui form">
     <div v-if="!dedaloRequested">
-      <div v-if="choosedMode && !codeRequested && hotspot.preferences.email_login_skip_auth == 'false'" class="ui compact message info no-margin-top">
+      <div v-if="choosedMode" class="ui compact message info no-margin-top">
         <div class="content">
           <div class="header">{{$t('email.wait')}}</div>
           <p v-html="$t('email.we_are_sending_email_code')"></p>
-        </div>
-      </div>
-      <div v-if="choosedMode && codeRequested && hotspot.preferences.email_login_skip_auth == 'false'" class="ui compact message info no-margin-top">
-        <div class="content">
-          <div class="header">{{$t('email.wait')}}</div>
-          <p v-html="$t('email.we_are_sending_email_code_signin')"></p>
-        </div>
-      </div>
-      <div v-if="choosedMode && !codeRequested && hotspot.preferences.email_login_skip_auth == 'true'" class="ui compact message info no-margin-top">
-        <div class="content">
-          <div class="header">{{$t('email.wait')}}</div>
-          <p v-html="$t('email.wait_skip_auth_text')"></p>
         </div>
       </div>
       <div v-if="choosedMode" class="field" v-bind:class="{ error: errors.badInput }">
@@ -27,7 +15,7 @@
         </div>
       </div>
       <p v-if="!codeRequested && !choosedMode" class="not-code-exp">
-        <label :style="textStyle">{{hotspot.preferences.email_login_skip_auth == 'true' ? $t("email.not_code_explain_skip_auth") : $t("email.not_code_explain") }}</label>
+        <label :style="textStyle">{{$t("email.not_code_explain") }}</label>
         <br />
         <br />
         <button v-on:click="chooseMode()" class="ui blue button request-code" :style="buttonStyle">
@@ -36,7 +24,7 @@
         </button>
       </p>
 
-      <p v-if="!codeRequested && !choosedMode && hotspot.preferences.email_login_skip_auth == 'false'" class="not-code-exp">
+      <p v-if="!codeRequested && !choosedMode" class="not-code-exp">
         <label :style="textStyle">{{$t("email.not_code_explain_else") }}</label>
         <br />
         <br />
@@ -59,7 +47,7 @@
         :style="buttonStyle"
       >
         {{
-        hotspot.preferences.email_login_skip_auth == 'false' ? $t("email.get_code") : $t("email.not_have_code_and_skip") }}
+        $t("email.get_code") }}
       </button>
       <div v-if="errors.badMail" class="ui tiny icon negative message">
         <i class="remove icon"></i>
@@ -96,7 +84,6 @@
       <button
         v-on:click="execLogin()"
         :disabled="isDisabled()"
-        v-if="hotspot.preferences.email_login_skip_auth == 'false'"
         class="big ui green button"
         :style="buttonStyle"
       >{{ $t("email.start_navigate") }}</button>
@@ -135,29 +122,21 @@
           </div>
         </div>
       </div>
-      <div v-if="errors.dedaloError && !errors.dedaloExpired" class="ui icon negative message">
+      <div v-if="errors.dedaloError" class="ui icon negative message">
         <i class="remove icon"></i>
         <div class="content">
           <div class="header" :style="textStyle">{{ $t("email.auth_error") }}</div>
           <p :style="textStyle" v-html="$t('email.auth_error_sub')"></p>
         </div>
       </div>
-      <div v-if="errors.dedaloError && errors.dedaloExpired" class="ui icon negative message">
-        <i class="remove icon"></i>
-        <div class="content">
-          <div class="header" :style="textStyle">{{ $t("email.auth_error") }}</div>
-          <p :style="textStyle" v-html="$t('email.auth_error_sub_expired')"></p>
-        </div>
-      </div>
-      <button v-if="errors.dedaloError" v-on:click="back()" class="big ui red button" :style="buttonStyle">{{ $t("login.back") }}</button>
       <div
         :class="hotspot.preferences.marketing_0_reason_country == 'true' ? 'adjust-top-big' : ''"
         v-if="authorized"
       >
         <div class="conditions-surveys">
           <div class="ui inline" v-if="hotspot.preferences.check_marketing == 'false'">
-            <input v-if="hotspot.preferences.email_login_skip_auth == 'false'" id="conditions" v-model="conditions" type="checkbox" class="ui checkbox field" />
-            <label v-if="hotspot.preferences.email_login_skip_auth == 'false'" :style="textStyle" for="conditions">{{ $t("login.disclaimer_privacy_accept") }}</label>
+            <input id="conditions" v-model="conditions" type="checkbox" class="ui checkbox field" />
+            <label :style="textStyle" for="conditions">{{ $t("login.disclaimer_privacy_accept") }}</label>
           </div>
           <div v-if="hotspot.preferences.marketing_1_enabled == 'true' && hotspot.preferences.check_marketing == 'false'" class="ui inline">
             <input id="surveys" v-model="surveys" type="checkbox" class="ui checkbox field" />
@@ -204,7 +183,6 @@ export default {
           context.dedaloRequested = true;
           context.authorized = false;
           context.errors.dedaloError = false;
-          context.errors.dedaloExpired = false;
           setTimeout(function() {
             context.execLogin();
           }, 1000);
@@ -223,7 +201,6 @@ export default {
           context.dedaloRequested = true;
           context.authorized = false;
           context.errors.dedaloError = false;
-          context.errors.dedaloExpired = false;
           setTimeout(function() {
             context.execLogin();
           }, 1000);
@@ -251,7 +228,6 @@ export default {
         badMail: false,
         badCode: false,
         dedaloError: false,
-        dedaloExpired: false,
         badInput: false
       },
       hotspot: {
@@ -323,39 +299,29 @@ export default {
             // open temp session for the user
             this.doTempSession(
               this.authEmail,
-              this.userId,
               function(responseTmp) {
-                // check if skip auth is enabled
-                if(responseTmp.body.skip_auth == "true") {
-                  this.dedaloRequested = true;
-                  this.authorized = true;
-                  this.errors.dedaloError = false;
-                  this.errors.dedaloExpired = false;
-                  this.authCode = "skip_code";
+                // if apple
+                if (this.iOS) {
+                  var origin = "http://conncheck." + window.location.host;
+                  var pathname = window.location.pathname;
+                  var query =
+                    "?digest=" +
+                    params.digest +
+                    "&uuid=" +
+                    params.uuid +
+                    "&sessionid=" +
+                    params.sessionid +
+                    "&uamip=" +
+                    params.uamip +
+                    "&uamport=" +
+                    params.uamport +
+                    "&user=" +
+                    this.userId +
+                    "&code=.&email=" +
+                    this.authEmail;
+                  window.location.replace(origin + pathname + query);
                 } else {
-                  // if apple
-                  if (this.iOS) {
-                    var origin = "http://conncheck." + window.location.host;
-                    var pathname = window.location.pathname;
-                    var query =
-                      "?digest=" +
-                      params.digest +
-                      "&uuid=" +
-                      params.uuid +
-                      "&sessionid=" +
-                      params.sessionid +
-                      "&uamip=" +
-                      params.uamip +
-                      "&uamport=" +
-                      params.uamport +
-                      "&user=" +
-                      this.userId +
-                      "&code=.&email=" +
-                      this.authEmail;
-                    window.location.replace(origin + pathname + query);
-                  } else {
-                    this.codeRequested = true;
-                  }
+                  this.codeRequested = true;
                 }
               },
               function(error) {
@@ -377,7 +343,6 @@ export default {
       this.dedaloRequested = true;
       this.authorized = false;
       this.errors.dedaloError = false;
-      this.errors.dedaloExpired = false;
       this.errors.badCode = false;
 
       if (
@@ -424,7 +389,6 @@ export default {
           function(error) {
             this.authorized = false;
             this.errors.dedaloError = true;
-            this.errors.dedaloExpired = false;
             console.error(error);
           }
         );
@@ -446,18 +410,15 @@ export default {
                   if (responseDedalo.body.clientState == 1) {
                     context.authorized = true;
                     context.errors.dedaloError = false;
-                    context.errors.dedaloExpired = false;
                   } else {
                     context.authorized = false;
                     context.errors.dedaloError = true;
-                    context.errors.dedaloExpired = responseDedalo.body.clientState == 2;
                     context.errors.badCode = true;
                   }
                 },
                 function(error) {
                   context.authorized = false;
                   context.errors.dedaloError = true;
-                  context.errors.dedaloExpired = false;
                   console.error(error);
                 }
               );
@@ -466,7 +427,6 @@ export default {
           function(error) {
             this.authorized = false;
             this.errors.dedaloError = true;
-            this.errors.dedaloExpired = false;
             console.error(error);
           }
         );

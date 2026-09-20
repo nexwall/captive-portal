@@ -73,20 +73,14 @@ func CreateAccount(c *gin.Context) {
 	passwordHash := fmt.Sprintf("%x", h.Sum(nil))
 
 	account := models.Account{
-		CreatorId:      creatorId,
-		Uuid:           json.Uuid,
-		Type:           json.Type,
-		Name:           json.Name,
-		Username:       json.Username,
-		Password:       passwordHash,
-		Email:          json.Email,
-		PrivacyName:    "",
-		PrivacyVAT:     "",
-		PrivacyAddress: "",
-		PrivacyEmail:   "",
-		PrivacyDPO:     "",
-		PrivacyDPOMail: "",
-		Created:        time.Now().UTC(),
+		CreatorId: creatorId,
+		Uuid:      json.Uuid,
+		Type:      json.Type,
+		Name:      json.Name,
+		Username:  json.Username,
+		Password:  passwordHash,
+		Email:     json.Email,
+		Created:   time.Now().UTC(),
 	}
 
 	// create account record
@@ -187,22 +181,6 @@ func UpdateAccount(c *gin.Context) {
 	if len(json.Type) > 0 {
 		account.Type = json.Type
 	}
-
-	// privacy update
-	if len(json.PrivacyName) > 0 {
-		account.PrivacyName = json.PrivacyName
-	}
-	if len(json.PrivacyVAT) > 0 {
-		account.PrivacyVAT = json.PrivacyVAT
-	}
-	if len(json.PrivacyAddress) > 0 {
-		account.PrivacyAddress = json.PrivacyAddress
-	}
-	if len(json.PrivacyEmail) > 0 {
-		account.PrivacyEmail = json.PrivacyEmail
-	}
-	account.PrivacyDPO = json.PrivacyDPO
-	account.PrivacyDPOMail = json.PrivacyDPOMail
 
 	// NOTE: Subscription plan change is not supported
 

@@ -33,18 +33,11 @@
         </div>
       </div>
     </div>
-    <div v-if="dedaloError && !dedaloExpired" class="ui icon negative message">
+    <div v-if="dedaloError" class="ui icon negative message">
       <i class="remove icon"></i>
       <div class="content">
         <div class="header" :style="textStyle">{{ $t("social.auth_error") }}</div>
         <p :style="textStyle">{{ $t("social.auth_error_sub") }}</p>
-      </div>
-    </div>
-    <div v-if="dedaloError && dedaloExpired" class="ui icon negative message">
-      <i class="remove icon"></i>
-      <div class="content">
-        <div class="header" :style="textStyle">{{ $t("social.auth_error") }}</div>
-        <p :style="textStyle">{{ $t("social.auth_error_sub_expired") }}</p>
       </div>
     </div>
     <div
@@ -84,7 +77,6 @@ export default {
   data: function() {
     var authorized = false;
     var dedaloError = false;
-    var dedaloExpired = false;
 
     // extract code and state
     var params = this.extractParams();
@@ -179,7 +171,6 @@ export default {
             var context = this;
             context.authorized = true;
             context.dedaloError = false;
-            context.dedaloExpired = false;
 
             setTimeout(function() {
               // exec dedalo login
@@ -192,17 +183,14 @@ export default {
                   if (responseDedalo.body.clientState == 1) {
                     context.authorized = true;
                     context.dedaloError = false;
-                    context.dedaloExpired = false;
                   } else {
                     context.authorized = false;
                     context.dedaloError = true;
-                    context.dedaloExpired = responseDedalo.body.clientState == 2;
                   }
                 },
                 function(error) {
                   context.authorized = false;
                   context.dedaloError = true;
-                  context.dedaloExpired = false;
                   console.error(error);
                 }
               );
@@ -212,7 +200,6 @@ export default {
         function(error) {
           this.authorized = false;
           this.dedaloError = true;
-          this.dedaloExpired = false;
           console.error(error);
         }
       );
@@ -227,7 +214,6 @@ export default {
     return {
       authorized: authorized,
       dedaloError: dedaloError,
-      dedaloExpired: dedaloExpired,
       hotspot: {
         disclaimers: this.$root.$options.hotspot.disclaimers,
         preferences: this.$root.$options.hotspot.preferences

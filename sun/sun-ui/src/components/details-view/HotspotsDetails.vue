@@ -1793,6 +1793,7 @@ import StorageService from "../../services/storage";
 import UtilService from "../../services/util";
 import DisclaimerService from "../../services/disclaimer";
 
+import jsPDF from "jspdf";
 import CaptivePortal from "../../directives/CaptivePortal.vue";
 import HotspotAction from "../../directives/HotspotAction.vue";
 import PictureInput from "vue-picture-input";
@@ -2886,15 +2887,17 @@ export default {
       );
     },
     printPrivacy() {
-      var finalPrivacy = "data:text/plain;charset=utf-8," + encodeURIComponent(this.selectedPrivacyBody || "");
+      var finalPrivacy = "data:text/plain;charset=utf-8," + (this.selectedPrivacyBody || "");
+      var encodedUri = encodeURI(finalPrivacy);
       var link = document.createElement("a");
-      link.setAttribute("href", finalPrivacy);
+      link.setAttribute("href", encodedUri);
       link.setAttribute("download", "privacy" + ".txt");
       link.click();
 
-      var finalTos = "data:text/plain;charset=utf-8," + encodeURIComponent(this.selectedTosBody || "");
+      var finalTos = "data:text/plain;charset=utf-8," + this.selectedTosBody;
+      var encodedUri = encodeURI(finalTos);
       var link = document.createElement("a");
-      link.setAttribute("href", finalTos);
+      link.setAttribute("href", encodedUri);
       link.setAttribute("download", "tos" + ".txt");
       link.click();
     },

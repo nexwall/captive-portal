@@ -29,8 +29,9 @@ type Social struct {
 }
 
 type AuthSocial struct {
-	Facebook Social `json:"facebook"`
-	LinkedIn Social `json:"linkedin"`
+	Facebook  Social `json:"facebook"`
+	LinkedIn  Social `json:"linkedin"`
+	Instagram Social `json:"instagram"`
 }
 
 type FacebookRespToken struct {
@@ -42,6 +43,11 @@ type FacebookRespToken struct {
 type LinkedInRespToken struct {
 	AccessToken string `json:"access_token"`
 	ExpiresIn   int    `json:"expires_in"`
+}
+
+type InstagramRespToken struct {
+	AccessToken string `json:"access_token"`
+	UserId int `json:"user_id"`
 }
 
 type FacebookInspectToken struct {
@@ -85,4 +91,9 @@ type LinkedinEmailDetail struct {
 			EmailAddress string `json:"emailAddress"`
 		} `json:"handle~"`
 	} `json:"elements"`
+}
+
+type InstagramUserDetail struct {
+	Id        string `json:"id"`
+	Username  string `json:"username"`
 }
