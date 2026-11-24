@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>{{ msg }}</h2>
+    <h2>{{ $t("menu.dashboard") }}</h2>
 
     <div class="row row-cards-pf">
       <div

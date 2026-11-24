@@ -8,6 +8,7 @@ import VueAwesomeCountdown from 'vue-awesome-countdown'
 
 import App from './App'
 import router from './router'
+import { detectLang, saveLang, allMessages } from './i18n'
 
 import 'semantic-css'
 import 'semantic'
@@ -26,13 +27,15 @@ var messages = {}
 var userLang = navigator.language || navigator.userLanguage;
 userLang = userLang.replace('-', '_').split('_')[0];
 
-// Nexwall: the guest page is always shown in Portuguese (Brazil)
-userLang = 'pt'
-messages = require('./i18n/locale-pt.json')
+// Nexwall: pt-BR default, es/en selectable (see ./i18n/index.js)
+userLang = detectLang()
+messages = allMessages()
+saveLang(userLang)
 
 // configure i18n
 var i18n = new VueI18n({
   locale: userLang,
+  fallbackLocale: 'pt',
   messages,
 })
 

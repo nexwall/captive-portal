@@ -3,7 +3,8 @@
     <!-- login view -->
     <div v-if="!isLogged" class="nx-login">
       <div class="nx-card">
-        <img class="nx-logo" src="/static/nexwall-logo-dark.svg" alt="Nexwall">
+        <img class="nx-logo nx-logo-l" src="/static/nexwall-logo-dark.svg" alt="Nexwall">
+        <img class="nx-logo nx-logo-d" src="/static/nexwall-logo-light.svg" alt="Nexwall">
         <h1>{{appName}}</h1>
         <p class="nx-sub">{{ $t("login.subtitle") }}</p>
         <form role="form" v-on:submit.prevent="doLogin()">
@@ -20,6 +21,10 @@
           <button type="submit" class="nx-btn" tabindex="3">{{ $t("login.submit") }}</button>
         </form>
       </div>
+      <div class="nx-langbar" role="group" aria-label="Idioma / Language">
+        <button v-for="l in langs" :key="l" type="button" :class="{on: $i18n.locale === l}" @click="setLang(l)">{{ l.toUpperCase() }}</button>
+        <button type="button" class="nx-theme" :title="$t('theme')" @click="toggleTheme()">{{ themeIcon }}</button>
+      </div>
       <div class="nx-foot">Copyright &copy; {{currentYear()}} {{companyName}}</div>
     </div>
     <!-- end login view -->
@@ -35,7 +40,8 @@
             <span class="icon-bar"></span>
           </button>
           <a href="/" class="navbar-brand">
-            <img class="navbar-brand-icon" src="/static/nexwall-logo-light.svg" alt="Nexwall">
+            <img class="navbar-brand-icon nx-logo-l" src="/static/nexwall-logo-dark.svg" alt="Nexwall">
+            <img class="navbar-brand-icon nx-logo-d" src="/static/nexwall-logo-light.svg" alt="Nexwall">
             <p class="navbar-brand-name">{{appName}}</p>
           </a>
         </div>
@@ -62,9 +68,13 @@
                   <a href="#/profile">{{ $t("menu.profile") }}</a>
                 </li>
                 <li>
-                  <a v-on:click="doLogout()" href="#">Logout</a>
+                  <a v-on:click="doLogout()" href="#">{{ $t("menu.logout") }}</a>
                 </li>
               </ul>
+            </li>
+            <li class="nx-langnav">
+              <button v-for="l in langs" :key="l" type="button" :title="$t('language')" :class="{on: $i18n.locale === l}" @click="setLang(l)">{{ l.toUpperCase() }}</button>
+              <button type="button" class="nx-theme" :title="$t('theme')" @click="toggleTheme()">{{ themeIcon }}</button>
             </li>
             <li class="dropdown">
               <a
@@ -336,6 +346,8 @@
 import LoginService from "./services/login";
 import StorageService from "./services/storage";
 import UtilService from "./services/util";
+import Lang from "./i18n/lang";
+import Theme from "./theme";
 import { setTimeout } from "timers";
 
 export default {
@@ -380,10 +392,23 @@ export default {
       errors: errors,
       appName: CONFIG.APP_NAME,
       helpUrl: CONFIG.HELP_URL,
-      companyName: CONFIG.COMPANY_NAME
+      companyName: CONFIG.COMPANY_NAME,
+      langs: Lang.langs,
+      themeMode: Theme.mode()
     };
   },
+  computed: {
+    themeIcon() {
+      return this.themeMode === "dark" ? "☾" : this.themeMode === "light" ? "☀" : "◐";
+    }
+  },
   methods: {
+    setLang(l) {
+      Lang.setLang(l);
+    },
+    toggleTheme() {
+      this.themeMode = Theme.next();
+    },
     currentYear() {
       return new Date().getFullYear();
     },

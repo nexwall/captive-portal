@@ -9,7 +9,10 @@
             "tos_and_privacy": "ToS and Privacy",
             "modal_terms": "Terms of Service and Privacy",
             "tos": "Terms of Service",
-            "privacy": "Privacy"
+            "privacy": "Privacy",
+            "close": "Close",
+            "default_subtitle": "Guest Wi-Fi",
+            "default_description": "Sign in to use the internet"
         },
         "login": {
             "voucher_title": "Voucher",

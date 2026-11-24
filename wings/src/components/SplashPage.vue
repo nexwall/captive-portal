@@ -4,9 +4,9 @@
       <div v-if="!hotspot.loaded" class="ui active centered inline text loader">{{ $t("splash.retrieve_info") }}...
       </div>
       <div v-if="hotspot.loaded">
-        <h3 :style="textStyle">{{hotspot.preferences.captive_4_subtitle}}</h3>
+        <h3 :style="textStyle">{{localized(hotspot.preferences.captive_4_subtitle)}}</h3>
         <img class="ui centered small image" :src="hotspot.preferences.captive_5_banner" />
-        <p :style="textStyle" v-html="hotspot.preferences.captive_6_description"></p>
+        <p :style="textStyle" v-html="localized(hotspot.preferences.captive_6_description)"></p>
         <div class="ui divider"></div>
         <div class="ui checkbox">
           <input v-model="hotspot.agree" type="checkbox" id="agree-terms" />
@@ -33,6 +33,7 @@
 </template>
 
 <script>
+  import { pickLang } from './../i18n'
   import AuthMixin from "./../mixins/auth";
   export default {
     name: "SplashPage",
@@ -80,22 +81,27 @@
       }
     },
     methods: {
+      localized(text) {
+        var defaults = { 'Wi-Fi para visitantes': 'splash.default_subtitle', 'Entre para usar a internet': 'splash.default_description' }
+        if (defaults[text]) return this.$i18n.t(defaults[text])
+        return pickLang(text, this.$i18n.locale)
+      },
       showModal() {
         this.$modal.show("dialog", {
           title: this.$i18n.t("splash.modal_terms"),
           text: [
             "<div>" + this.$i18n.t("splash.tos") + "</div>",
             '<textarea readonly class="terms-text">' +
-            this.$root.$options.hotspot.disclaimers.terms_of_use +
+            pickLang(this.$root.$options.hotspot.disclaimers.terms_of_use, this.$i18n.locale) +
             "</textarea>",
             "<div></div>",
             "<div>" + this.$i18n.t("splash.privacy") + "</div>",
             '<textarea readonly class="terms-text">' +
-            this.$root.$options.hotspot.disclaimers.marketing_use +
+            pickLang(this.$root.$options.hotspot.disclaimers.marketing_use, this.$i18n.locale) +
             "</textarea>"
           ].join(""),
           buttons: [{
-            title: "Close"
+            title: this.$i18n.t("splash.close")
           }]
         });
       }

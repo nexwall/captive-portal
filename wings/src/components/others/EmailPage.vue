@@ -66,7 +66,7 @@
               :type="passwordVisible ? 'number' : 'password'"
               :placeholder="$t('email.insert_your_code')"
             />
-            <i class="braille icon"></i>
+            <i class="lock icon"></i>
             <!-- toggle password visibility -->
             <button
               tabindex="-1"

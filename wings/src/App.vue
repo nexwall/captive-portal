@@ -1,7 +1,10 @@
 <template>
-  <div id="app" class="ui segment container" :style="containerStyle">
+  <div id="app" class="ui segment container" :class="{ 'nx-custom': customLook }" :style="containerStyle">
     <div v-show="loading" class="ui active dimmer inverted">
       <div class="ui loader"></div>
+    </div>
+    <div v-show="!loading" class="nx-lang" role="group" aria-label="Idioma / Language">
+      <button v-for="l in langs" :key="l" type="button" :class="{on: $i18n.locale === l}" @click="setLang(l)">{{ l.toUpperCase() }}</button>
     </div>
     <div v-show="!loading" class="ui center aligned">
       <h2 :style="titleStyle">{{hotspot.preferences.captive_2_title}}</h2>
@@ -15,6 +18,7 @@
 
 <script>
   import AuthMixin from './mixins/auth';
+  import { LANGS, saveLang } from './i18n';
   export default {
     name: 'App',
     mixins: [AuthMixin],
@@ -35,15 +39,26 @@
           this.hotspot.preferences = success.body.preferences
           this.loading = false
 
-          // background color
-          $("body").css("background-color", success.body.preferences.captive_7_background || '#2a87be');
+          // Nexwall theme: the hotspot only overrides the look if it was customised away from the defaults
+          var pr = success.body.preferences
+          var dflt = function (v, list) { return !v || list.indexOf(String(v).toLowerCase()) >= 0 }
+          this.customLook = !(dflt(pr.captive_7_background, ['#0b1730', '#2a87be']) &&
+            dflt(pr.captive_82_container_bg_color, ['#ffffffff', '#ffffffdb']) &&
+            dflt(pr.captive_83_title_color, ['#0b1730', '#4a4a4a']) &&
+            dflt(pr.captive_84_text_color, ['#333333', '#4a4a4a']) &&
+            !pr.captive_81_bg_image)
 
-          // background image
-          if (success.body.preferences.captive_81_bg_image) {
-            $("body").css("height", "100vh");
-            $("body").css("background-size", "cover");
-            $("body").css("background-position", "center");
-            $("body").css("background-image", 'url("' + success.body.preferences.captive_81_bg_image + '")');
+          if (this.customLook) {
+            // background color
+            $("body").css("background-color", pr.captive_7_background || '#2a87be');
+
+            // background image
+            if (pr.captive_81_bg_image) {
+              $("body").css("height", "100vh");
+              $("body").css("background-size", "cover");
+              $("body").css("background-position", "center");
+              $("body").css("background-image", 'url("' + pr.captive_81_bg_image + '")');
+            }
           }
 
           this.titleColor = success.body.preferences.captive_83_title_color || '#4A4A4A'
@@ -100,13 +115,15 @@
           preferences: {}
         },
         loading: loading,
+        langs: LANGS,
         session: {
           loginDest: '',
           voucherCode: ''
         },
         titleColor: '#4A4A4A',
         textFont: 'Roboto',
-        containerBgColor: '#ffffffdb'
+        containerBgColor: '#ffffffdb',
+        customLook: false
       }
     },
     computed: {
@@ -118,11 +135,15 @@
       },
       containerStyle: function () {
         return {
-          'background-color': this.containerBgColor
+          'background-color': this.customLook ? this.containerBgColor : undefined
         }
       }
     },
     methods: {
+      setLang: function (l) {
+        this.$i18n.locale = l
+        saveLang(l)
+      },
       validateParams: function () {
         var state = false
         if (Object.keys(this.$route.query).length > 0) {

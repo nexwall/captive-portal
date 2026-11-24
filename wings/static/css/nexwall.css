@@ -1,8 +1,10 @@
+/* Same palette as the Nexwall Partner Portal (Tailwind sky/gray); dark follows the device setting */
+:root{--bg:#f9fafb;--card:#ffffff;--line:#e5e7eb;--line2:#d1d5dc;--text:#101828;--muted:#4a5565;--pri:#0069a8;--pri-h:#00598a;--pri-t:#ffffff;--focus:#00a6f4;--input:#ffffff;--danger:#c70036;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#030712;--card:#101828;--line:#364153;--line2:#6a7282;--text:#f9fafb;--muted:#99a1af;--pri:#00a6f4;--pri-h:#74d4ff;--pri-t:#030712;--focus:#b8e6fe;--input:#030712;--danger:#ff2056;color-scheme:dark}}
 /* Nexwall guest login page (Wings) - modern, responsive, aligned with the Partner Portal */
 html{min-height:100%}
 body{min-height:100vh;margin:0;font-family:'Poppins','Segoe UI',Helvetica,Arial,sans-serif;
-  background-image:radial-gradient(900px 520px at 12% -10%,rgba(79,156,249,.32),transparent 60%),radial-gradient(800px 520px at 100% 110%,rgba(13,92,255,.30),transparent 60%);
-  background-attachment:fixed;background-repeat:no-repeat}
+  background-color:var(--bg);color:var(--text)}
 #app.ui.segment.container{width:calc(100% - 32px) !important;max-width:440px !important;margin:28px auto !important;padding:28px 24px 24px !important;
   border:0 !important;border-radius:20px !important;box-shadow:0 24px 60px rgba(2,8,23,.45),0 2px 6px rgba(2,8,23,.2) !important;
   font-family:'Poppins','Segoe UI',Helvetica,Arial,sans-serif !important;-webkit-font-smoothing:antialiased}
@@ -41,3 +43,34 @@ body{min-height:100vh;margin:0;font-family:'Poppins','Segoe UI',Helvetica,Arial,
   background:linear-gradient(135deg,#4f9cf9,#0d5cff) !important;color:#fff !important}
 #app .ui.button.disabled,#app .ui.disabled.button{opacity:.5 !important}
 #app .ui.button.green{background:linear-gradient(135deg,#4f9cf9,#0d5cff) !important;color:#fff !important}
+/* language switcher */
+#app.ui.segment.container{position:relative}
+#app .nx-lang{position:absolute;top:10px;right:12px;display:flex;gap:4px;z-index:5}
+#app .nx-lang button{font-family:'Poppins','Segoe UI',sans-serif;font-size:11px;font-weight:600;letter-spacing:.04em;border:1px solid rgba(100,116,139,.35);background:transparent;color:#475569;border-radius:8px;padding:3px 8px;min-width:34px;cursor:pointer;line-height:1.4}
+#app .nx-lang button.on{background:linear-gradient(135deg,#4f9cf9,#0d5cff);border-color:transparent;color:#fff}
+/* inputs with icons: keep text clear of the icon */
+#app .ui.left.icon.input>input{padding-left:2.9em !important}
+#app .ui.icon.input>i.icon{position:absolute !important;top:0;left:0;width:2.9em;height:46px;line-height:46px;margin:0;font-size:16px;opacity:.55;display:flex;align-items:center;justify-content:center}
+#app .ui.icon.input>i.icon:before{position:static;line-height:1;margin:0}
+
+/* ---- theme (palette variables) ---- */
+#app.ui.segment.container{background-color:var(--card);border:1px solid var(--line) !important;border-radius:12px !important;box-shadow:0 1px 2px rgba(16,24,40,.06),0 8px 24px rgba(16,24,40,.08) !important}
+#app input[type=text],#app input[type=email],#app input[type=password],#app input[type=tel],#app input[type=number],#app .ui.input>input,#app select{height:44px;background:var(--input) !important;color:var(--text) !important;border:1px solid var(--line2) !important;border-radius:8px !important}
+#app input::placeholder{color:#99a1af !important;opacity:1}
+#app input:focus,#app select:focus{border-color:var(--focus) !important;box-shadow:0 0 0 3px color-mix(in srgb,var(--focus) 30%,transparent) !important}
+#app .ui.button,#app button.ui{border-radius:8px !important;box-shadow:none !important}
+#app .ui.button:not(.facebook):not(.instagram):not(.linkedin):not(.yellow):not(.red):not(.orange):not(.green):not(.twitter):not(.google),#app .ui.button.green{background:var(--pri) !important;color:var(--pri-t) !important;background-image:none !important}
+#app .ui.button:hover:not(.facebook):not(.instagram):not(.linkedin){filter:none;background:var(--pri-h) !important}
+#app .ui.button.red{background:var(--danger) !important;color:#fff !important}
+#app a{color:var(--focus)}
+#app .ui.divider{border-color:var(--line) !important}
+#app:not(.nx-custom) h1,#app:not(.nx-custom) h2,#app:not(.nx-custom) h3,#app:not(.nx-custom) h4,#app:not(.nx-custom) p,#app:not(.nx-custom) label,#app:not(.nx-custom) span,#app:not(.nx-custom) .header{color:var(--text) !important}
+#app:not(.nx-custom) .terms-space a,#app:not(.nx-custom) a.terms{color:var(--text) !important}
+#app .nx-lang button{border-color:var(--line2);color:var(--muted);border-radius:6px}
+#app .nx-lang button.on{background:var(--pri);border-color:var(--pri);color:var(--pri-t)}
+#app .ui.message{background:var(--bg) !important;color:var(--text) !important;border:1px solid var(--line) !important}
+#app .ui.checkbox label:before{background:var(--input) !important;border-color:var(--line2) !important}
+.v--modal,.v--modal-box{background:var(--card) !important;color:var(--text) !important;border-radius:12px !important}
+.v--modal .dialog-content,.v--modal .vue-dialog-content-title{color:var(--text) !important}
+.v--modal textarea.terms-text{background:var(--input) !important;color:var(--text) !important;border:1px solid var(--line2) !important;border-radius:8px}
+.v--modal .vue-dialog-button{background:var(--bg) !important;color:var(--text) !important;border-top:1px solid var(--line) !important}

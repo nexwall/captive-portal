@@ -66,7 +66,7 @@ input {
 }
 
 .logged {
-  background-color: #f5f5f5;
+  background-color: var(--bg2);
   background-image: none;
 }
 
@@ -192,10 +192,10 @@ input {
 }
 
 .table>thead th {
-  color: #464646 !important;
+  color: var(--muted) !important;
   border: none !important;
-  background: #f5f5f5 !important;
-  border-bottom: 2px solid #26a9a3 !important;
+  background: var(--bg2) !important;
+  border-bottom: 2px solid var(--pri) !important;
   font-size: 14px !important;
 }
 
@@ -204,7 +204,7 @@ input {
 }
 
 .table>tbody tr {
-  background-color: white;
+  background-color: var(--bg);
   height: 47px;
 }
 
@@ -217,7 +217,7 @@ input {
 }
 
 .table>tbody tr:hover {
-  background-color: #def3ff;
+  background-color: var(--bg2);
 }
 
 .table>tbody tr td {
@@ -327,16 +327,16 @@ input {
 }
 
 a {
-  color: #26a9a3;
+  color: var(--pri);
 }
 
 .navbar-pf-vertical {
-  border-top: 2px solid #26a9a3 !important;
-  background-color: #171717 !important;
+  border-top: 2px solid var(--pri) !important;
+  background-color: var(--bg) !important;
 }
 
 .nav-pf-vertical .list-group-item.active>a:before {
-  background: #26a9a3 !important;
+  background: var(--pri) !important;
 }
 
 .nav-pf-vertical .list-group-item.active>a .fa,
@@ -345,16 +345,16 @@ a {
 .nav-pf-vertical .list-group-item:hover>a .fa,
 .nav-pf-vertical .list-group-item:hover>a .glyphicon,
 .nav-pf-vertical .list-group-item:hover>a .pficon {
-  color: #26a9a3 !important;
+  color: var(--pri) !important;
 }
 
 .card-pf.card-pf-accented {
-  border-top-color: #26a9a3 !important;
+  border-top-color: var(--pri) !important;
 }
 
 .btn-primary {
-  background-color: #007a87 !important;
-  background-image: linear-gradient(to bottom, #26a9a3 0, #007a87 100%) !important;
+  background-color: var(--pri-h) !important;
+  background-image: none !important;
 }
 
 .unsplash {
@@ -407,7 +407,7 @@ a {
 }
 
 .card-link:hover {
-  color: #26a9a3 !important;
+  color: var(--pri) !important;
 }
 
 .picture-preview {

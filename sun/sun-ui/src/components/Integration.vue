@@ -90,7 +90,7 @@
                 </div>
                 <div class="list-view-pf-additional-info-item">
                   <span class="fa fa-lock"></span>
-                  <a data-toggle="modal" data-target="#privacyModal" data-backdrop="static" @click="setIntegration(i)">Privacy</a>
+                  <a data-toggle="modal" data-target="#privacyModal" data-backdrop="static" @click="setIntegration(i)">{{ $t("hotspot.marketing_info") }}</a>
                 </div>
                 <div class="list-view-pf-additional-info-item">
                   <span
@@ -124,7 +124,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title" id="privacyModalLabel">Privacy</h4>
+            <h4 class="modal-title" id="privacyModalLabel">{{ $t("hotspot.marketing_info") }}</h4>
           </div>
           <div class="modal-body">
             <form class="form-horizontal">
@@ -137,7 +137,7 @@
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ $t("cancel") }}</button>
           </div>
         </div>
       </div>

@@ -515,6 +515,20 @@ Link de saída: http://logout
 
 ----------------------------------
 
+Bienvenido(a)
+Haga clic en el enlace de abajo para acceder a internet ahora:
+Enlace de acceso: `+GenerateShortURL(configuration.Config.Endpoints.Email.Link+"?"+auth+"&code="+code+"&email="+url.QueryEscape(email), uamip, uamport, false)+`
+
+
+O ingrese usando su correo electrónico junto con este código de acceso:
+Código: `+code+`
+
+
+Para desconectarse, haga clic en el enlace de abajo:
+Enlace de salida: http://logout
+
+----------------------------------
+
 Welcome
 Click on the link below to immediately access the internet:
 Login Link: `+GenerateShortURL(configuration.Config.Endpoints.Email.Link+"?"+auth+"&code="+code+"&email="+url.QueryEscape(email), uamip, uamport, false)+`

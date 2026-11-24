@@ -11,7 +11,7 @@
             :type="voucherVisible ? 'email' : 'password'"
             :placeholder="$t('login.insert_voucher')"
           >
-          <i class="braille icon"></i>
+          <i class="barcode icon"></i>
           <!-- toggle voucher visibility -->
           <button
             tabindex="-1"

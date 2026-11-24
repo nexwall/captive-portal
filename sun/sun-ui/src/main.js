@@ -11,6 +11,8 @@ import App from "./App.vue";
 import router from "./routes/router";
 import languages from "./i18n/lang";
 import filters from "./filters/filters";
+import Theme from "./theme";
+Theme.init();
 
 window.$ = window.jQuery = require("patternfly/node_modules/jquery/dist/jquery.min.js");
 require("patternfly/node_modules/bootstrap/dist/js/bootstrap.min.js");
@@ -28,6 +30,7 @@ Vue.use(FlagIcon);
 var langConf = languages.initLang();
 const i18n = new VueI18n({
   locale: langConf.locale,
+  fallbackLocale: "pt",
   messages: langConf.messages
 });
 var moment = require("patternfly/node_modules/moment/moment.js");
