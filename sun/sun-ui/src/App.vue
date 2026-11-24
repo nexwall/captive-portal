@@ -17,7 +17,7 @@
             <div class="col-sm-7 col-md-6 col-lg-5 login">
               <form class="form-horizontal" role="form" v-on:submit.prevent="doLogin()">
                 <div v-bind:class="[errors.username ? 'has-error' : '', 'form-group']">
-                  <label for="inputUsername" class="col-sm-2 col-md-2 control-label">Username</label>
+                  <label for="inputUsername" class="col-sm-2 col-md-2 control-label">Usuário</label>
                   <div class="col-sm-10 col-md-10">
                     <input
                       autocomplete="username"
@@ -33,7 +33,7 @@
                   </div>
                 </div>
                 <div v-bind:class="[errors.password ? 'has-error' : '', 'form-group']">
-                  <label for="inputPassword" class="col-sm-2 col-md-2 control-label">Password</label>
+                  <label for="inputPassword" class="col-sm-2 col-md-2 control-label">Senha</label>
                   <div class="col-sm-10 col-md-10">
                     <input
                       autocomplete="current-password"
@@ -53,7 +53,7 @@
                     <span class="help-block"></span>
                   </div>
                   <div class="col-xs-4 col-sm-4 col-md-4 submit">
-                    <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Log In</button>
+                    <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Entrar</button>
                   </div>
                 </div>
               </form>
@@ -67,29 +67,6 @@
             <!--/.col-*-->
           </div>
           <!--/.row-->
-          <div class="right">
-            <a
-              class="unsplash"
-              href="https://unsplash.com/@mojoblogs?utm_medium=referral&amp;utm_campaign=photographer-credit&amp;utm_content=creditBadge"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="Download free do whatever you want high-resolution photos from Zara Walker"
-            >
-              <span style="display:inline-block;padding:2px 3px;">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  style="height:12px;width:auto;position:relative;vertical-align:middle;top:-1px;fill:white;"
-                  viewBox="0 0 32 32"
-                >
-                  <title>unsplash-logo</title>
-                  <path
-                    d="M20.8 18.1c0 2.7-2.2 4.8-4.8 4.8s-4.8-2.1-4.8-4.8c0-2.7 2.2-4.8 4.8-4.8 2.7.1 4.8 2.2 4.8 4.8zm11.2-7.4v14.9c0 2.3-1.9 4.3-4.3 4.3h-23.4c-2.4 0-4.3-1.9-4.3-4.3v-15c0-2.3 1.9-4.3 4.3-4.3h3.7l.8-2.3c.4-1.1 1.7-2 2.9-2h8.6c1.2 0 2.5.9 2.9 2l.8 2.4h3.7c2.4 0 4.3 1.9 4.3 4.3zm-8.6 7.5c0-4.1-3.3-7.5-7.5-7.5-4.1 0-7.5 3.4-7.5 7.5s3.3 7.5 7.5 7.5c4.2-.1 7.5-3.4 7.5-7.5z"
-                  ></path>
-                </svg>
-              </span>
-              <span style="display:inline-block;padding:2px 3px;">Zara Walker</span>
-            </a>
-          </div>
           <div>Copyright &copy; {{currentYear()}} {{companyName}}</div>
         </div>
         <!--/.container-->
