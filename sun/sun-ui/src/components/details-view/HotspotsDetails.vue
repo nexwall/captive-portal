@@ -1630,7 +1630,7 @@
       class="card-pf"
       id="voucher-coupon"
     >
-      <img class="voucher-logo" src="/static/logo.png" />
+      <img class="voucher-logo" src="/static/nexwall-logo-dark.svg" />
       <h2 class="card-pf-title voucher-name" id="test">{{info.data.name}}</h2>
       <h3 class="card-pf-title voucher-desc">{{info.data.description}}</h3>
       <div class="card-pf-body voucher-main">

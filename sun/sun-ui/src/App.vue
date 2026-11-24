@@ -1,76 +1,26 @@
 <template>
   <div id="app">
     <!-- login view -->
-    <div v-if="!isLogged" class="login-pf">
-      <div>
-        <span id="badge">
-          <img src="/static/logo-light.png" alt=" logo">
-        </span>
-        <div class="container">
-          <div class="row">
-            <div class="col-sm-12 col-brand">
-              <div id="brand">
-                <h1>{{appName}}</h1>
-              </div>
-            </div>
-            <!--/.col-*-->
-            <div class="col-sm-7 col-md-6 col-lg-5 login">
-              <form class="form-horizontal" role="form" v-on:submit.prevent="doLogin()">
-                <div v-bind:class="[errors.username ? 'has-error' : '', 'form-group']">
-                  <label for="inputUsername" class="col-sm-2 col-md-2 control-label">Usuário</label>
-                  <div class="col-sm-10 col-md-10">
-                    <input
-                      autocomplete="username"
-                      required
-                      v-model="username"
-                      type="text"
-                      class="form-control"
-                      id="inputUsername"
-                      :placeholder="$t('login.insert_username')"
-                      tabindex="1"
-                    >
-                    <span v-if="errors.username" class="help-block">{{ $t("login.user_error") }}</span>
-                  </div>
-                </div>
-                <div v-bind:class="[errors.password ? 'has-error' : '', 'form-group']">
-                  <label for="inputPassword" class="col-sm-2 col-md-2 control-label">Senha</label>
-                  <div class="col-sm-10 col-md-10">
-                    <input
-                      autocomplete="current-password"
-                      required
-                      v-model="password"
-                      type="password"
-                      class="form-control"
-                      id="inputPassword"
-                      :placeholder="$t('login.insert_password')"
-                      tabindex="2"
-                    >
-                    <span v-if="errors.password" class="help-block">{{ $t("login.password_error") }}</span>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="col-xs-8 col-sm-offset-2 col-sm-6 col-md-offset-2 col-md-6">
-                    <span class="help-block"></span>
-                  </div>
-                  <div class="col-xs-4 col-sm-4 col-md-4 submit">
-                    <button type="submit" class="btn btn-primary btn-lg" tabindex="4">Entrar</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <!--/.col-*-->
-            <div class="col-sm-5 col-md-6 col-lg-7 details">
-              <p>
-                <strong>{{ $t("login.welcome") }} {{appName}}</strong>
-              </p>
-            </div>
-            <!--/.col-*-->
+    <div v-if="!isLogged" class="nx-login">
+      <div class="nx-card">
+        <img class="nx-logo" src="/static/nexwall-logo-dark.svg" alt="Nexwall">
+        <h1>{{appName}}</h1>
+        <p class="nx-sub">{{ $t("login.subtitle") }}</p>
+        <form role="form" v-on:submit.prevent="doLogin()">
+          <div v-bind:class="[errors.username ? 'has-error' : '', 'nx-field']">
+            <label for="inputUsername">{{ $t("login.username") }}</label>
+            <input autocomplete="username" required v-model="username" type="text" id="inputUsername" :placeholder="$t('login.insert_username')" tabindex="1">
+            <span v-if="errors.username" class="nx-err">{{ $t("login.user_error") }}</span>
           </div>
-          <!--/.row-->
-          <div>Copyright &copy; {{currentYear()}} {{companyName}}</div>
-        </div>
-        <!--/.container-->
+          <div v-bind:class="[errors.password ? 'has-error' : '', 'nx-field']">
+            <label for="inputPassword">{{ $t("login.password") }}</label>
+            <input autocomplete="current-password" required v-model="password" type="password" id="inputPassword" :placeholder="$t('login.insert_password')" tabindex="2">
+            <span v-if="errors.password" class="nx-err">{{ $t("login.password_error") }}</span>
+          </div>
+          <button type="submit" class="nx-btn" tabindex="3">{{ $t("login.submit") }}</button>
+        </form>
       </div>
+      <div class="nx-foot">Copyright &copy; {{currentYear()}} {{companyName}}</div>
     </div>
     <!-- end login view -->
     <!-- logged view -->
@@ -85,7 +35,7 @@
             <span class="icon-bar"></span>
           </button>
           <a href="/" class="navbar-brand">
-            <img class="navbar-brand-icon" src="/static/logo-light.png" alt>
+            <img class="navbar-brand-icon" src="/static/nexwall-logo-light.svg" alt="Nexwall">
             <p class="navbar-brand-name">{{appName}}</p>
           </a>
         </div>
@@ -372,7 +322,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <img class="about-logo" src="/static/logo-light.png" alt="Patternfly Symbol">
+            <img class="about-logo" src="/static/nexwall-logo-dark.svg" alt="Nexwall">
           </div>
         </div>
       </div>

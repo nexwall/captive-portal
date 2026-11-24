@@ -5,7 +5,11 @@
       "insert_username": "Digite seu usuário",
       "insert_password": "Digite sua senha",
       "user_error": "Usuário inválido",
-      "password_error": "Senha inválida"
+      "password_error": "Senha inválida",
+      "subtitle": "Entre para gerenciar o Wi-Fi dos seus visitantes",
+      "username": "Usuário",
+      "password": "Senha",
+      "submit": "Entrar"
     },
     "dashboard": {
       "preferences": "Preferências",

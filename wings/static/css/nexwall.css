@@ -1,0 +1,43 @@
+/* Nexwall guest login page (Wings) - modern, responsive, aligned with the Partner Portal */
+html{min-height:100%}
+body{min-height:100vh;margin:0;font-family:'Poppins','Segoe UI',Helvetica,Arial,sans-serif;
+  background-image:radial-gradient(900px 520px at 12% -10%,rgba(79,156,249,.32),transparent 60%),radial-gradient(800px 520px at 100% 110%,rgba(13,92,255,.30),transparent 60%);
+  background-attachment:fixed;background-repeat:no-repeat}
+#app.ui.segment.container{width:calc(100% - 32px) !important;max-width:440px !important;margin:28px auto !important;padding:28px 24px 24px !important;
+  border:0 !important;border-radius:20px !important;box-shadow:0 24px 60px rgba(2,8,23,.45),0 2px 6px rgba(2,8,23,.2) !important;
+  font-family:'Poppins','Segoe UI',Helvetica,Arial,sans-serif !important;-webkit-font-smoothing:antialiased}
+#app h1,#app h2,#app h3,#app h4,#app label,#app p,#app span,#app button,#app input,#app select{font-family:'Poppins','Segoe UI',Helvetica,Arial,sans-serif !important}
+#app h2{font-size:20px !important;font-weight:600 !important;margin:6px 0 0 !important}
+#app h3{font-size:17px !important;font-weight:600 !important}
+#app img.ui.image{margin:6px auto 14px !important;width:auto !important;max-width:220px !important;height:56px !important;object-fit:contain}
+#app .route-container{margin-top:18px !important;text-align:left}
+#app .ui.form .field>label,#app label{font-size:13px;font-weight:500}
+#app input[type=text],#app input[type=email],#app input[type=password],#app input[type=tel],#app input[type=number],#app .ui.input>input,#app select{
+  height:46px;border:1px solid #cbd5e1 !important;border-radius:10px !important;padding:0 14px !important;font-size:15px !important;outline:0;transition:border-color .15s,box-shadow .15s}
+#app input:focus,#app select:focus{border-color:#0d5cff !important;box-shadow:0 0 0 4px rgba(13,92,255,.15) !important}
+#app .ui.button,#app button.ui{border-radius:12px !important;font-weight:600 !important;min-height:48px;margin:0 0 10px !important;width:100%;
+  box-shadow:0 6px 16px rgba(2,8,23,.18) !important;transition:transform .1s,filter .15s}
+#app .ui.button:hover{filter:brightness(1.06)}
+#app .ui.button:active{transform:translateY(1px)}
+#app .ui.button.disabled,#app .ui.button[disabled]{opacity:.55 !important;box-shadow:none !important}
+#app .ui.divider{margin:14px 0 !important;border-color:rgba(100,116,139,.25) !important}
+#app .ui.checkbox label,#app .ui.checkbox{font-size:13px}
+#app .ui.message{border-radius:12px !important;box-shadow:none !important}
+#app .ui.modal,.ui.modal{border-radius:16px !important}
+#app a{color:#0d5cff}
+@media (max-width:480px){
+  #app.ui.segment.container{margin:12px auto !important;padding:22px 16px 18px !important;border-radius:16px !important}
+  #app h2{font-size:18px !important}
+}
+
+/* tweaks */
+#app .route-container{text-align:center !important}
+#app .route-container img{display:none !important}
+#app .ui.checkbox,#app .ui.checkbox label{text-align:left}
+#app .ui.form .field,#app .ui.form .inline.field{text-align:left}
+
+/* primary button + readable disabled state */
+#app .ui.button:not(.facebook):not(.instagram):not(.linkedin):not(.yellow):not(.red):not(.orange):not(.green):not(.twitter):not(.google){
+  background:linear-gradient(135deg,#4f9cf9,#0d5cff) !important;color:#fff !important}
+#app .ui.button.disabled,#app .ui.disabled.button{opacity:.5 !important}
+#app .ui.button.green{background:linear-gradient(135deg,#4f9cf9,#0d5cff) !important;color:#fff !important}

@@ -5,7 +5,11 @@
       "insert_username": "Insert you username",
       "insert_password": "Insert your password",
       "user_error": "Invalid username",
-      "password_error": "Invalid password"
+      "password_error": "Invalid password",
+      "subtitle": "Sign in to manage your guest Wi-Fi",
+      "username": "Username",
+      "password": "Password",
+      "submit": "Sign in"
     },
     "dashboard": {
       "preferences": "Preferences",

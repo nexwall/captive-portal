@@ -9,4 +9,4 @@ Nexwall Firewall installs `dedalo` as the `ns-dedalo` package and connects to a 
 
 ## License
 
-GPL-3.0, see `LICENSE`. Attribution and the list of changes are in `NOTICE.md`.
+AGPL-3.0, see `LICENSE`. Attribution and the list of changes are in `NOTICE.md`.
