@@ -26,14 +26,9 @@ var messages = {}
 var userLang = navigator.language || navigator.userLanguage;
 userLang = userLang.replace('-', '_').split('_')[0];
 
-// try loading browser locale
-try {
-  messages = require('./i18n/locale-' + userLang + '.json')
-} catch (e) {
-  console.info('locale: ' + userLang + ' not found. fallback to en')
-  messages = require('./i18n/locale-en.json')
-  userLang = 'en'
-}
+// Nexwall: the guest page is always shown in Portuguese (Brazil)
+userLang = 'pt'
+messages = require('./i18n/locale-pt.json')
 
 // configure i18n
 var i18n = new VueI18n({

@@ -320,7 +320,7 @@
               </div>
               <ul class="list-group">
                 <li class="list-group-item">
-                  <a target="blank" href="https://github.com/nethesis/icaro">
+                  <a target="blank" href="https://github.com/nexwall/captive-portal">
                     <span class="list-group-item-value">{{ $t("menu.help") }}</span>
                   </a>
                 </li>
@@ -363,32 +363,32 @@
                   <strong>Sun UI</strong>
                   <a
                     target="blank"
-                    href="https://github.com/nethesis/icaro/tree/master/sun/sun-ui"
+                    href="https://github.com/nexwall/captive-portal/tree/main/sun/sun-ui"
                   >GitHub</a>
                 </li>
                 <li>
                   <strong>Sun API</strong>
                   <a
                     target="blank"
-                    href="https://github.com/nethesis/icaro/tree/master/sun/sun-api"
+                    href="https://github.com/nexwall/captive-portal/tree/main/sun/sun-api"
                   >GitHub</a>
                 </li>
                 <li>
                   <strong>Wax</strong>
-                  <a target="blank" href="https://github.com/nethesis/icaro/tree/master/wax">GitHub</a>
+                  <a target="blank" href="https://github.com/nexwall/captive-portal/tree/main/wax">GitHub</a>
                 </li>
                 <li>
                   <strong>Wings</strong>
                   <a
                     target="blank"
-                    href="https://github.com/nethesis/icaro/tree/master/wings"
+                    href="https://github.com/nexwall/captive-portal/tree/main/wings"
                   >GitHub</a>
                 </li>
                 <li>
                   <strong>Dedalo</strong>
                   <a
                     target="blank"
-                    href="https://github.com/nethesis/icaro/tree/master/dedalo"
+                    href="https://github.com/nexwall/captive-portal/tree/main/dedalo"
                   >GitHub</a>
                 </li>
               </ul>

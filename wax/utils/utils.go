@@ -441,7 +441,7 @@ func SendSMSCode(number string, code string, unit models.Unit, auth string, uami
 			msgData.Set("MessagingServiceSid", configuration.Config.Endpoints.Sms.ServiceSid)
 			msgData.Set("Body", `Login Link: `+GenerateShortURL(configuration.Config.Endpoints.Sms.Link+"?"+auth+"&code="+code+"&num="+url.QueryEscape(number), uamip, uamport, false)+`
 
-Codice/Code: `+code+`
+Código/Code: `+code+`
 
 Logout Link: http://logout`)
 			msgDataReader := *strings.NewReader(msgData.Encode())
@@ -498,20 +498,20 @@ func SendEmailCode(email string, code string, unit models.Unit, auth string, uam
 
 	status := true
 	m := gomail.NewMessage()
-	m.SetHeader("From", configuration.Config.Endpoints.Email.From)
+	m.SetHeader("From", m.FormatAddress(configuration.Config.Endpoints.Email.From, configuration.Config.Endpoints.Email.FromName))
 	m.SetHeader("To", email)
 	m.SetHeader("Subject", "Wi-Fi: "+hotspot.Description)
-	m.SetBody("text/plain", `Benvenut*
-Clicca sul link sottostante per accedere subito ad internet:
-Login Link: `+GenerateShortURL(configuration.Config.Endpoints.Email.Link+"?"+auth+"&code="+code+"&email="+url.QueryEscape(email), uamip, uamport, false)+`
+	m.SetBody("text/plain", `Bem-vindo(a)
+Clique no link abaixo para acessar a internet agora:
+Link de acesso: `+GenerateShortURL(configuration.Config.Endpoints.Email.Link+"?"+auth+"&code="+code+"&email="+url.QueryEscape(email), uamip, uamport, false)+`
 
 
-In alternativa puoi accedere usando la tua email assieme al seguente codice di accesso:
-Codice: `+code+`
+Ou entre usando o seu e-mail junto com este código de acesso:
+Código: `+code+`
 
 
-Se vuoi disconnetterti dal servizio clicca sul seguente link:
-Logout link: http://logout
+Para se desconectar, clique no link abaixo:
+Link de saída: http://logout
 
 ----------------------------------
 
